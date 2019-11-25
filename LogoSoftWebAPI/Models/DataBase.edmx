@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cat_Productos">
+          <Key>
+            <PropertyRef Name="Producto_ID" />
+          </Key>
+          <Property Name="Producto_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Codigo" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Precio" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ope_Facturas">
+          <Key>
+            <PropertyRef Name="No_Factura" />
+          </Key>
+          <Property Name="No_Factura" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Numero_Comprobante" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="Nombre_Cliente" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Cedula" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Subtotal" Type="money" Nullable="false" />
+          <Property Name="Descuento" Type="money" Nullable="false" />
+          <Property Name="Total" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ope_Facturas_Detalles">
+          <Key>
+            <PropertyRef Name="No_Factura_Detalle" />
+          </Key>
+          <Property Name="No_Factura_Detalle" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="No_Factura" Type="bigint" Nullable="false" />
+          <Property Name="Producto_ID" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Precio" Type="money" Nullable="false" />
+          <Property Name="Importe" Type="money" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Ope_Facturas_Detalles_Cat_Productos_Producto_ID">
+          <End Role="Cat_Productos" Type="Self.Cat_Productos" Multiplicity="1" />
+          <End Role="Ope_Facturas_Detalles" Type="Self.Ope_Facturas_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cat_Productos">
+              <PropertyRef Name="Producto_ID" />
+            </Principal>
+            <Dependent Role="Ope_Facturas_Detalles">
+              <PropertyRef Name="Producto_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ope_Facturas_Detalles_Ope_Facturas_No_Factura">
+          <End Role="Ope_Facturas" Type="Self.Ope_Facturas" Multiplicity="1" />
+          <End Role="Ope_Facturas_Detalles" Type="Self.Ope_Facturas_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ope_Facturas">
+              <PropertyRef Name="No_Factura" />
+            </Principal>
+            <Dependent Role="Ope_Facturas_Detalles">
+              <PropertyRef Name="No_Factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spConsultaVentas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NoDocumentoInicial" Type="varchar" Mode="In" />
+          <Parameter Name="NoDocumentoFinal" Type="varchar" Mode="In" />
+          <Parameter Name="NombreCliente" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="ModelsStoreContainer">
+          <EntitySet Name="Cat_Productos" EntityType="Self.Cat_Productos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ope_Facturas" EntityType="Self.Ope_Facturas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ope_Facturas_Detalles" EntityType="Self.Ope_Facturas_Detalles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Ope_Facturas_Detalles_Cat_Productos_Producto_ID" Association="Self.FK_Ope_Facturas_Detalles_Cat_Productos_Producto_ID">
+            <End Role="Cat_Productos" EntitySet="Cat_Productos" />
+            <End Role="Ope_Facturas_Detalles" EntitySet="Ope_Facturas_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ope_Facturas_Detalles_Ope_Facturas_No_Factura" Association="Self.FK_Ope_Facturas_Detalles_Ope_Facturas_No_Factura">
+            <End Role="Ope_Facturas" EntitySet="Ope_Facturas" />
+            <End Role="Ope_Facturas_Detalles" EntitySet="Ope_Facturas_Detalles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cat_Productos">
+          <Key>
+            <PropertyRef Name="Producto_ID" />
+          </Key>
+          <Property Name="Producto_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Ope_Facturas_Detalles" Relationship="Self.FK_Ope_Facturas_Detalles_Cat_Productos_Producto_ID" FromRole="Cat_Productos" ToRole="Ope_Facturas_Detalles" />
+        </EntityType>
+        <EntityType Name="Ope_Facturas">
+          <Key>
+            <PropertyRef Name="No_Factura" />
+          </Key>
+          <Property Name="No_Factura" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Numero_Comprobante" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre_Cliente" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cedula" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Subtotal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Descuento" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Ope_Facturas_Detalles" Relationship="Self.FK_Ope_Facturas_Detalles_Ope_Facturas_No_Factura" FromRole="Ope_Facturas" ToRole="Ope_Facturas_Detalles" />
+        </EntityType>
+        <EntityType Name="Ope_Facturas_Detalles">
+          <Key>
+            <PropertyRef Name="No_Factura_Detalle" />
+          </Key>
+          <Property Name="No_Factura_Detalle" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="No_Factura" Type="Int64" Nullable="false" />
+          <Property Name="Producto_ID" Type="Int32" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Importe" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Cat_Productos" Relationship="Self.FK_Ope_Facturas_Detalles_Cat_Productos_Producto_ID" FromRole="Ope_Facturas_Detalles" ToRole="Cat_Productos" />
+          <NavigationProperty Name="Ope_Facturas" Relationship="Self.FK_Ope_Facturas_Detalles_Ope_Facturas_No_Factura" FromRole="Ope_Facturas_Detalles" ToRole="Ope_Facturas" />
+        </EntityType>
+        <Association Name="FK_Ope_Facturas_Detalles_Cat_Productos_Producto_ID">
+          <End Role="Cat_Productos" Type="Self.Cat_Productos" Multiplicity="1" />
+          <End Role="Ope_Facturas_Detalles" Type="Self.Ope_Facturas_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cat_Productos">
+              <PropertyRef Name="Producto_ID" />
+            </Principal>
+            <Dependent Role="Ope_Facturas_Detalles">
+              <PropertyRef Name="Producto_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ope_Facturas_Detalles_Ope_Facturas_No_Factura">
+          <End Role="Ope_Facturas" Type="Self.Ope_Facturas" Multiplicity="1" />
+          <End Role="Ope_Facturas_Detalles" Type="Self.Ope_Facturas_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ope_Facturas">
+              <PropertyRef Name="No_Factura" />
+            </Principal>
+            <Dependent Role="Ope_Facturas_Detalles">
+              <PropertyRef Name="No_Factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dboEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cat_Productos" EntityType="Self.Cat_Productos" />
+          <EntitySet Name="Ope_Facturas" EntityType="Self.Ope_Facturas" />
+          <EntitySet Name="Ope_Facturas_Detalles" EntityType="Self.Ope_Facturas_Detalles" />
+          <AssociationSet Name="FK_Ope_Facturas_Detalles_Cat_Productos_Producto_ID" Association="Self.FK_Ope_Facturas_Detalles_Cat_Productos_Producto_ID">
+            <End Role="Cat_Productos" EntitySet="Cat_Productos" />
+            <End Role="Ope_Facturas_Detalles" EntitySet="Ope_Facturas_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ope_Facturas_Detalles_Ope_Facturas_No_Factura" Association="Self.FK_Ope_Facturas_Detalles_Ope_Facturas_No_Factura">
+            <End Role="Ope_Facturas" EntitySet="Ope_Facturas" />
+            <End Role="Ope_Facturas_Detalles" EntitySet="Ope_Facturas_Detalles" />
+          </AssociationSet>
+          <FunctionImport Name="spConsultaVentas" ReturnType="Collection(Models.spConsultaVentas_Result)">
+            <Parameter Name="NoDocumentoInicial" Mode="In" Type="String" />
+            <Parameter Name="NoDocumentoFinal" Mode="In" Type="String" />
+            <Parameter Name="NombreCliente" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="spConsultaVentas_Result">
+          <Property Type="String" Name="Numero_Comprobante" Nullable="false" MaxLength="12" />
+          <Property Type="String" Name="Nombre_Cliente" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Fecha" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="SubTotal" Nullable="false" Precision="19" />
+          <Property Type="Decimal" Name="Descuento" Nullable="false" Precision="19" />
+          <Property Type="Decimal" Name="Total" Nullable="false" Precision="19" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelsStoreContainer" CdmEntityContainer="dboEntities">
+          <EntitySetMapping Name="Cat_Productos">
+            <EntityTypeMapping TypeName="Models.Cat_Productos">
+              <MappingFragment StoreEntitySet="Cat_Productos">
+                <ScalarProperty Name="Producto_ID" ColumnName="Producto_ID" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ope_Facturas">
+            <EntityTypeMapping TypeName="Models.Ope_Facturas">
+              <MappingFragment StoreEntitySet="Ope_Facturas">
+                <ScalarProperty Name="No_Factura" ColumnName="No_Factura" />
+                <ScalarProperty Name="Numero_Comprobante" ColumnName="Numero_Comprobante" />
+                <ScalarProperty Name="Nombre_Cliente" ColumnName="Nombre_Cliente" />
+                <ScalarProperty Name="Cedula" ColumnName="Cedula" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Descuento" ColumnName="Descuento" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ope_Facturas_Detalles">
+            <EntityTypeMapping TypeName="Models.Ope_Facturas_Detalles">
+              <MappingFragment StoreEntitySet="Ope_Facturas_Detalles">
+                <ScalarProperty Name="No_Factura_Detalle" ColumnName="No_Factura_Detalle" />
+                <ScalarProperty Name="No_Factura" ColumnName="No_Factura" />
+                <ScalarProperty Name="Producto_ID" ColumnName="Producto_ID" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Importe" ColumnName="Importe" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spConsultaVentas" FunctionName="Models.Store.spConsultaVentas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spConsultaVentas_Result">
+                <ScalarProperty Name="Numero_Comprobante" ColumnName="Numero_Comprobante" />
+                <ScalarProperty Name="Nombre_Cliente" ColumnName="Nombre_Cliente" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="Descuento" ColumnName="Descuento" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
