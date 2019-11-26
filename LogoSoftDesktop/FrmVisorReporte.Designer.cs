@@ -28,35 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.rptViewer = new FastReport.Preview.PreviewControl();
+            this.crViewer = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
             this.SuspendLayout();
             // 
-            // rptViewer
+            // crViewer
             // 
-            this.rptViewer.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.rptViewer.Font = new System.Drawing.Font("Tahoma", 8F);
-            this.rptViewer.Location = new System.Drawing.Point(0, 0);
-            this.rptViewer.Name = "rptViewer";
-            this.rptViewer.PageOffset = new System.Drawing.Point(10, 10);
-            this.rptViewer.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.rptViewer.SaveInitialDirectory = null;
-            this.rptViewer.Size = new System.Drawing.Size(799, 447);
-            this.rptViewer.TabIndex = 0;
+            this.crViewer.ActiveViewIndex = -1;
+            this.crViewer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.crViewer.Cursor = System.Windows.Forms.Cursors.Default;
+            this.crViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crViewer.Location = new System.Drawing.Point(0, 0);
+            this.crViewer.Name = "crViewer";
+            this.crViewer.ShowGroupTreeButton = false;
+            this.crViewer.Size = new System.Drawing.Size(800, 450);
+            this.crViewer.TabIndex = 0;
+            this.crViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None;
             // 
             // FrmVisorReporte
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.rptViewer);
+            this.Controls.Add(this.crViewer);
             this.Name = "FrmVisorReporte";
-            this.Text = "Visor de Reportes";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Visor de Reporte";
+            this.Load += new System.EventHandler(this.FrmVisorReporte_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private FastReport.Preview.PreviewControl rptViewer;
+        public CrystalDecisions.Windows.Forms.CrystalReportViewer crViewer;
     }
 }

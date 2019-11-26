@@ -1,4 +1,4 @@
-﻿using FastReport;
+﻿using CrystalDecisions.CrystalReports.Engine;
 using LogoSoftDesktop.Datasets;
 using Newtonsoft.Json;
 using System;
@@ -68,10 +68,10 @@ namespace LogoSoftDesktop
                         var contents = JsonConvert.DeserializeObject<typeResponse>(response.Content.ReadAsStringAsync().Result);
                         Txt_Numero_Comprobante.Text = contents.Message;
 
-                        DsFactura dsFactura1 = new DsFactura();
+                        DsFactura dsFactura = new DsFactura();
                         DataRow Registro;
                         
-                        Registro = dsFactura1.Tables["Encabezado"].NewRow();
+                        Registro = dsFactura.Tables["Encabezado"].NewRow();
                         Registro["Numero_Documento"] = Txt_Numero_Comprobante.Text;
                         Registro["Fecha"] = Dtp_Fecha.Value;
                         Registro["Cedula"] = Txt_Cedula.Text;
@@ -79,27 +79,26 @@ namespace LogoSoftDesktop
                         Registro["SubTotal"] = Subtotal;
                         Registro["Descuento"] = Descuento;
                         Registro["Total"] = Total;
-                        dsFactura1.Tables["Encabezado"].Rows.Add(Registro);
+                        dsFactura.Tables["Encabezado"].Rows.Add(Registro);
 
                         foreach (var detalle in detallesProductos)
                         {
-                            Registro = dsFactura1.Tables["Detalles"].NewRow();
+                            Registro = dsFactura.Tables["Detalles"].NewRow();
                             Registro["Cantidad"] = detalle.Cantidad;
                             Registro["Codigo"] = detalle.Codigo;
                             Registro["Nombre"] = detalle.Nombre;
                             Registro["Precio"] = detalle.Precio;
                             Registro["Importe"] = detalle.Importe;
-                            dsFactura1.Tables["Detalles"].Rows.Add(Registro);
+                            dsFactura.Tables["Detalles"].Rows.Add(Registro);
                         }
 
-
-                        //rptFactura.Show();
-                        //using (Report report = new Report())
-                        //{
-                        //    report.Load(AppDomain.CurrentDomain.BaseDirectory + "\\Reportes\\RptFormatoFactura.frx");
-                        //    report.RegisterData(dsFactura1);
-                        //    report.Show();
-                        //}
+                        FrmVisorReporte frm = new FrmVisorReporte();
+                        ReportDocument rpt = new ReportDocument();
+                        rpt.Load(AppDomain.CurrentDomain.BaseDirectory + "\\Reportes\\RptFormatoFactura.rpt");
+                        rpt.SetDataSource(dsFactura);
+                        frm.crViewer.ReportSource = rpt;
+                        frm.crViewer.RefreshReport();
+                        frm.Show();
 
                         this.Cursor = Cursors.Default;
                         MessageBox.Show("Factura registrada");

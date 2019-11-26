@@ -16,5 +16,10 @@ namespace LogoSoftDesktop
         {
             InitializeComponent();
         }
+
+        private void FrmVisorReporte_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
